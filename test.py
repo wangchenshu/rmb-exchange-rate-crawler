@@ -32,9 +32,6 @@ class MyHTMLParser(HTMLParser):
         my_data_list.append(data)
         #print "%d Encountered some data  : %s" % (self.cnt, data)
         
-        
-        
-
 def deflate(data): 
     try:               
         return zlib.decompress(data, -zlib.MAX_WBITS)
@@ -54,6 +51,9 @@ parser = MyHTMLParser()
 parser.feed(html_str)
 
 i = 0
+file_name = 'rmb.csv'
+f = open(file_name, 'w+')
+
 while i < len(my_data_list):
     my_data_dict = {
         'name': '',
@@ -71,14 +71,23 @@ while i < len(my_data_list):
         my_data_dict['sell_cash'] = my_data_list[i+4]
         my_data_dict['time'] = my_data_list[i+5]
 
-        print "(%s): %s" % (my_data_list[0], my_data_dict['name'])
-        print "(%s): %s" % (my_data_list[1], my_data_dict['buy_sight'])
-        print "(%s): %s" % (my_data_list[2], my_data_dict['sell_sight'])
-        print "(%s): %s" % (my_data_list[3], my_data_dict['buy_cash'])
-        print "(%s): %s" % (my_data_list[4], my_data_dict['sell_cash'])
-        print "(%s): %s" % (my_data_list[5], my_data_dict['time'])
+        print "%s: %s" % (my_data_list[0], my_data_dict['name'])
+        print "%s: %s" % (my_data_list[1], my_data_dict['buy_sight'])
+        print "%s: %s" % (my_data_list[2], my_data_dict['sell_sight'])
+        print "%s: %s" % (my_data_list[3], my_data_dict['buy_cash'])
+        print "%s: %s" % (my_data_list[4], my_data_dict['sell_cash'])
+        print "%s: %s" % (my_data_list[5], my_data_dict['time'])
         print '--------'
+    
+    for j in range(6):
+        f.write(my_data_list[i+j])
+        if j < 5:
+            f.write(',')
+    f.write('\n')
+
     new_my_data_list.append(my_data_dict)
     i += 6
     if i >= 85:
         break
+
+f.close()
